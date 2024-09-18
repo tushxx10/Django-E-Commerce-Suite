@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{%block title%}My Cart{%endblock%}
+
+{%block content%}
+<h2 class="text-2xl font-semibold mb-4">My Cart</h2>
+
+{%if cart%}
+<ul class="space-y-4">
+    {%for item in cart.items.all %}
+    <li class="flex items-center p-4">
+        {% if item.product.image%}
+        <img src="{{item.product.image.url}}" alt="{{item.product.name}}" style="width: 6rem; margin-right: 10px;; height: auto; object-fit: contain;">
+        {%endif%}
+        <div class="flex-grow">
+            <a href="{% url 'Products:product_detail' item.product.id item.product.slug %}">
+        <h3 class="font-semibold text-lg">{{item.product.name}}</h3>
+    </a>
+        <p style="color: #4a5568";>{{item.product.description}}</p>
+        <p class="text-indigo-600">₹{{item.product.price}}</p>
+        <p style="color: #6c757d;">Quantity: {{item.quantity}}</p>
+
+<div class="flex-shrink">
+    <form action="{% url 'cart:remove_item' item.id %}" method="post">
+    {%csrf_token%}
+    <button type="submit" style="
+    background-color: #e53e3e; color: #ffffff; padding-left: 1rem;       
+    padding-right: 1rem;      
+    padding-top: 0.5rem;      
+    padding-bottom: 0.5rem;   
+    border-radius: 0.25rem;   
+    cursor: pointer;          
+">X</button>
+</form>
+</div>
+    </div>
+    </li>
+    {%endfor%}
+</ul>
+
+<p><strong>Total Price: ₹{{cart.get_total_price}}</strong></p>
+
+{% else %} 
+<p>You cart is empty.</p>
+
+{% endif %}
+<form action="{% url 'orders:order_create'%}" method="post">
+    {%csrf_token%}
+    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded mt-0.5">Proceed to Checkout</button>
+</form>
+{%endblock%}
