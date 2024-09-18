@@ -1,3 +1,4 @@
+
 // postcss.config.js
 module.exports = {
     plugins: [
@@ -6,3 +7,13 @@ module.exports = {
     ],
   }
   
+
+// postcss.config.js
+module.exports = {
+    plugins: [
+      require('tailwindcss'),
+      require('autoprefixer'),
+    ],
+  }
+  
+
